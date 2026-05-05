@@ -1,25 +1,38 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import {
-  KnowledgeBase,
-  OperationResult,
-  StatusCode,
-} from './types/bases.interface';
+import type { KnowledgeBase, OperationResult } from './types/bases.interface';
+import { StatusCode } from './types/bases.interface';
+import type {
+  CreateKnowledgeBaseDto,
+  UpdateKnowledgeBaseDto,
+} from './dto/bases.dto';
 
 const DATA: KnowledgeBase[] = [
   {
     id: 1,
-    name: 'wangta',
-    description: 'wangta description',
+    name: '后端学习知识库',
+    description: '用于沉淀 Node.js、NestJS、数据库和 RAG 学习资料',
+    visibility: 'private',
+    status: 'active',
+    createdAt: '2026-05-05T00:00:00.000Z',
+    updatedAt: '2026-05-05T00:00:00.000Z',
   },
   {
     id: 2,
-    name: 'wangta 2',
-    description: 'wangta 2 description',
+    name: '团队知识库',
+    description: '团队共享的业务文档和接口规范',
+    visibility: 'team',
+    status: 'active',
+    createdAt: '2026-05-05T00:00:00.000Z',
+    updatedAt: '2026-05-05T00:00:00.000Z',
   },
   {
     id: 3,
-    name: 'wangta 3',
-    description: 'wangta 3 description',
+    name: '归档知识库',
+    description: '已归档的历史资料',
+    visibility: 'private',
+    status: 'archived',
+    createdAt: '2026-05-05T00:00:00.000Z',
+    updatedAt: '2026-05-05T00:00:00.000Z',
   },
 ];
 
@@ -37,40 +50,48 @@ export class KnowledgeBasesService {
     return result;
   }
 
-  create(item: KnowledgeBase): OperationResult {
-    const hasData: boolean = !!DATA.find(
-      (_item: KnowledgeBase) => _item.id === item.id,
-    );
-    if (hasData) {
-      return {
-        code: StatusCode.Failed,
-        message: '已存在相同数据',
-      };
-    }
+  create(item: CreateKnowledgeBaseDto): OperationResult<KnowledgeBase> {
+    const now = new Date().toISOString();
+    const id = Math.max(...DATA.map((data: KnowledgeBase) => data.id), 0) + 1;
+    const knowledgeBase: KnowledgeBase = {
+      id,
+      ...item,
+      createdAt: now,
+      updatedAt: now,
+    };
 
-    DATA.push(item);
+    DATA.push(knowledgeBase);
     return {
       code: StatusCode.OK,
       message: '成功',
+      data: knowledgeBase,
     };
   }
 
-  update(id: number, item: KnowledgeBase): OperationResult {
+  update(
+    id: number,
+    item: UpdateKnowledgeBaseDto,
+  ): OperationResult<KnowledgeBase> {
     const dataIndex: number = DATA.findIndex(
       (_item: KnowledgeBase) => _item.id === id,
     );
 
     if (dataIndex === -1) {
-      return {
-        code: StatusCode.Failed,
-        message: '没有找到要变更的内容',
-      };
+      throw new NotFoundException();
     }
 
-    DATA.splice(dataIndex, 1, item);
+    const knowledgeBase: KnowledgeBase = {
+      ...DATA[dataIndex],
+      ...item,
+      id,
+      updatedAt: new Date().toISOString(),
+    };
+
+    DATA.splice(dataIndex, 1, knowledgeBase);
     return {
       code: StatusCode.OK,
       message: '成功',
+      data: knowledgeBase,
     };
   }
 
@@ -80,10 +101,7 @@ export class KnowledgeBasesService {
     );
 
     if (dataIndex === -1) {
-      return {
-        code: StatusCode.Failed,
-        message: '没有找到要变更的内容',
-      };
+      throw new NotFoundException();
     }
 
     DATA.splice(dataIndex, 1);

@@ -8,7 +8,11 @@ import {
   ParseIntPipe,
   Body,
 } from '@nestjs/common';
-import type { KnowledgeBase, OperationResult } from './types/bases.interface';
+import type { OperationResult, KnowledgeBase } from './types/bases.interface';
+import type {
+  CreateKnowledgeBaseDto,
+  UpdateKnowledgeBaseDto,
+} from './dto/bases.dto';
 import { KnowledgeBasesService } from './knowledge-bases.service';
 
 @Controller('knowledge-bases')
@@ -35,7 +39,7 @@ export class KnowledgeBasesController {
    * 创建知识库
    * */
   @Post()
-  create(@Body() item: KnowledgeBase): OperationResult {
+  create(@Body() item: CreateKnowledgeBaseDto): OperationResult<KnowledgeBase> {
     return this.basesService.create(item);
   }
 
@@ -45,8 +49,8 @@ export class KnowledgeBasesController {
   @Patch(':id')
   update(
     @Param('id', ParseIntPipe) id: number,
-    @Body() item: KnowledgeBase,
-  ): OperationResult {
+    @Body() item: UpdateKnowledgeBaseDto,
+  ): OperationResult<KnowledgeBase> {
     return this.basesService.update(id, item);
   }
 

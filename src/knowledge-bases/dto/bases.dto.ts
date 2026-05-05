@@ -1,6 +1,18 @@
-import { IsString } from 'class-validator';
+import type {
+  KnowledgeBaseStatus,
+  KnowledgeBaseVisibility,
+} from '../types/bases.interface';
 
-export class BasesDto {
-  @IsString()
-  id: string;
+export class CreateKnowledgeBaseDto {
+  name: string;
+  description?: string;
+  visibility: KnowledgeBaseVisibility;
+  status: KnowledgeBaseStatus;
+}
+
+export class UpdateKnowledgeBaseDto {
+  name?: string;
+  description?: string;
+  visibility?: KnowledgeBaseVisibility;
+  status?: KnowledgeBaseStatus;
 }

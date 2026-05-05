@@ -1,8 +1,15 @@
 // 单个知识库
+export type KnowledgeBaseVisibility = 'private' | 'team';
+export type KnowledgeBaseStatus = 'active' | 'archived';
+
 export interface KnowledgeBase {
   id: number;
   name: string;
   description?: string;
+  visibility: KnowledgeBaseVisibility;
+  status: KnowledgeBaseStatus;
+  createdAt: string;
+  updatedAt: string;
 }
 
 // 状态码
