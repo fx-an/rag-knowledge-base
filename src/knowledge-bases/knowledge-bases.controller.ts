@@ -19,16 +19,16 @@ export class KnowledgeBasesController {
    * 查询列表
    * */
   @Get()
-  getList(): KnowledgeBase[] {
-    return this.basesService.getList();
+  findAll(): KnowledgeBase[] {
+    return this.basesService.findAll();
   }
 
   /**
    * 查询详情
    * */
   @Get(':id')
-  getView(@Param('id', ParseIntPipe) id: number): KnowledgeBase {
-    return this.basesService.getView(id);
+  findOne(@Param('id', ParseIntPipe) id: number): KnowledgeBase {
+    return this.basesService.findOne(id);
   }
 
   /**
@@ -54,7 +54,7 @@ export class KnowledgeBasesController {
    * 删除知识库
    * */
   @Delete(':id')
-  delete(@Param('id', ParseIntPipe) id: number): OperationResult {
-    return this.basesService.delete(id);
+  remove(@Param('id', ParseIntPipe) id: number): OperationResult {
+    return this.basesService.remove(id);
   }
 }

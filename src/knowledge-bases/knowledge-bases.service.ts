@@ -25,11 +25,11 @@ const DATA: KnowledgeBase[] = [
 
 @Injectable()
 export class KnowledgeBasesService {
-  getList(): KnowledgeBase[] {
+  findAll(): KnowledgeBase[] {
     return DATA;
   }
 
-  getView(id: number): KnowledgeBase {
+  findOne(id: number): KnowledgeBase {
     const result: KnowledgeBase | undefined = DATA.find(
       (item: KnowledgeBase) => item.id === id,
     );
@@ -74,7 +74,7 @@ export class KnowledgeBasesService {
     };
   }
 
-  delete(id: number): OperationResult {
+  remove(id: number): OperationResult {
     const dataIndex: number = DATA.findIndex(
       (_item: KnowledgeBase) => _item.id === id,
     );
