@@ -1,5 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { KnowledgeBasesController } from './knowledge-bases.controller';
+import { KnowledgeBasesService } from './knowledge-bases.service';
 
 describe('KnowledgeBasesController', () => {
   let controller: KnowledgeBasesController;
@@ -7,6 +8,7 @@ describe('KnowledgeBasesController', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [KnowledgeBasesController],
+      providers: [KnowledgeBasesService],
     }).compile();
 
     controller = module.get<KnowledgeBasesController>(KnowledgeBasesController);
