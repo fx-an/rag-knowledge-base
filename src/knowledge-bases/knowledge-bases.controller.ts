@@ -27,7 +27,7 @@ export class KnowledgeBasesController {
    * 查询详情
    * */
   @Get(':id')
-  getView(@Param('id', ParseIntPipe) id: number): KnowledgeBase | null {
+  getView(@Param('id', ParseIntPipe) id: number): KnowledgeBase {
     return this.basesService.getView(id);
   }
 

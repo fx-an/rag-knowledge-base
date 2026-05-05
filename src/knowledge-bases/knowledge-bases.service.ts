@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import {
   KnowledgeBase,
   OperationResult,
@@ -29,8 +29,12 @@ export class KnowledgeBasesService {
     return DATA;
   }
 
-  getView(id: number): KnowledgeBase | null {
-    return DATA.find((item: KnowledgeBase) => item.id === id) || null;
+  getView(id: number): KnowledgeBase {
+    const result: KnowledgeBase | undefined = DATA.find(
+      (item: KnowledgeBase) => item.id === id,
+    );
+    if (!result) throw new NotFoundException();
+    return result;
   }
 
   create(item: KnowledgeBase): OperationResult {
